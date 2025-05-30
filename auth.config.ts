@@ -23,7 +23,7 @@ export const authConfig = {
       options: {
         sameSite: "none",
         secure: true,
-        path: "/dashboard",
+        path: "/",
       },
     },
     csrfToken: {

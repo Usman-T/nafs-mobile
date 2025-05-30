@@ -2,8 +2,8 @@ import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
   appId: "com.mobile.nafs",
-  appName: "nafs",
-  webDir: "www",
+  appName: "Nafs",
+  webDir: ".next",
 };
 
 export default config;
