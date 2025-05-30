@@ -1,14 +1,21 @@
-import withPWA from "next-pwa";
+import withSerwistInit from "@serwist/next";
 
-export default withPWA({
-  dest: "public",
-  register: true,
-  skipWaiting: true,
-})({
+const revision = crypto.randomUUID();
+
+const withSerwist = withSerwistInit({
+  cacheOnNavigation: true,
+  swSrc: "app/sw.ts",
+  swDest: "public/sw.js",
+  additionalPrecacheEntries: [{ url: "/~offline", revision }],
+});
+
+const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
   },
-});
+};
+
+export default withSerwist(nextConfig);
