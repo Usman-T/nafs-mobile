@@ -90,7 +90,7 @@ const ChallengesComplete = ({
 
       setTimeout(() => {
         router.refresh();
-        router.push("/dashboard/challenges");
+        router.push("/dashboard");
       }, 1500);
     } catch (error) {
       console.log(error);

@@ -11,6 +11,7 @@ import {
   Settings,
   User,
   BookOpen,
+  Home,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -41,10 +42,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const { data: session, status } = useSession();
 
   const navItems = [
-    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Challenges", href: "/dashboard/challenges", icon: Award },
+    { name: "Home", href: "/dashboard", icon: Home },
     { name: "Calendar", href: "/dashboard/calendar", icon: Calendar },
     { name: "Progress", href: "/dashboard/progress", icon: BarChart3 },
+    { name: "Guidance", href: "/dashboard/guidance", icon: BookOpen },
     { name: "Settings", href: "/dashboard/settings", icon: Settings },
   ];
 
@@ -110,7 +111,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               </Link>
             );
           })}
-
 
           {navItems.slice(2, 4).map((item) => {
             const isActive = pathname === item.href;
@@ -222,25 +222,30 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     );
   };
 
+  const isSurahPage = pathname.startsWith("/dashboard/guidance/surah/");
+
   return (
     <div className="md:flex bg-[#1d2021] min-h-screen">
-      <DesktopSidebar />
+      {" "}
+      <DesktopSidebar />{" "}
       <div className="flex flex-col flex-1">
-        <header className="sticky top-0 z-10 flex h-16 items-center border-b border-[#2e2e2e] bg-[#1d2021]/80 px-6 backdrop-blur-md md:px-8 shadow-lg">
-          <div className="flex-1">
-            <h1 className="text-lg font-semibold text-[#e0e0e0]">
-              {navItems.find((item) => item.href === pathname)?.name ||
-                "Dashboard"}
-            </h1>
-          </div>
-          <div className="flex items-center gap-4">
-            <UserDropdown />
-          </div>
-        </header>
+        {!isSurahPage && (
+          <header className="sticky top-0 z-10 flex h-16 items-center border-b border-[#2e2e2e] bg-[#1d2021]/80 px-6 backdrop-blur-md md:px-8 shadow-lg">
+            <div className="flex-1">
+              <h1 className="text-lg font-semibold text-[#e0e0e0]">
+                {navItems.find((item) => item.href === pathname)?.name ||
+                  "Dashboard"}
+              </h1>
+            </div>
+            <div className="flex items-center gap-4">
+              <UserDropdown />
+            </div>
+          </header>
+        )}
         <main className="flex-1 bg-[#1d2021] pb-16 md:pb-0 overflow-auto">
           <div>{children}</div>
         </main>
-        <MobileNav hide={hidden} />
+        {!isSurahPage && <MobileNav hide={hidden} />}
       </div>
     </div>
   );
