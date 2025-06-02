@@ -225,7 +225,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const isSurahPage = pathname.startsWith("/dashboard/guidance/surah/");
 
   return (
-    <div className="md:flex bg-[#1d2021] min-h-screen">
+    <div className="md:flex bg-[#1d2021] min-h-screen ">
       {" "}
       <DesktopSidebar />{" "}
       <div className="flex flex-col flex-1">

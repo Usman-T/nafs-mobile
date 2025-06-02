@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title: "Nafs - Islamic Spiritual Growth Tracker",
     images: [
       {
-        url: "/og-cover.png", 
+        url: "/og-cover.png",
         width: 1200,
         height: 630,
         alt: "Nafs – Islamic Spiritual Growth Tracker",
@@ -75,7 +75,7 @@ export default function RootLayout({
         <meta name="application-name" content="Nafs" />
         <meta name="msapplication-TileColor" content="#000000" />
       </head>
-      <body className={`${inter.className} bg-dark-bg0 text-dark-fg0`}>
+      <body className={`${inter.className} `}>
         <SessionProvider>
           <Toaster />
           {children}

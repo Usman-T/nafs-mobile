@@ -33,6 +33,11 @@ import LoadingSkeleton from "./challenges-skeleton";
 import { iconMap } from "@/lib/iconMap";
 import Link from "next/link";
 import CompletedChallenge from "./completed-challenge";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 
 interface ChallengesProps {
   challenge: UserChallenge & {
@@ -151,6 +156,7 @@ const Challenges = ({
           completed: true,
         });
         localStorage.removeItem("nafs-hide-mobile-nav");
+        window.dispatchEvent(new Event("storage"));
         router.refresh();
       } else {
         console.error("Failed to complete day:", result.message);
@@ -161,6 +167,7 @@ const Challenges = ({
       console.error("Error completing day:", error);
       setShowCompletionFlow(false);
       localStorage.removeItem("nafs-hide-mobile-nav");
+      window.dispatchEvent(new Event("storage"));
     } finally {
       setIsCompletingDay(false);
     }
@@ -193,7 +200,8 @@ const Challenges = ({
   }
 
   const currentDay = Math.min(
-    differenceInDays(new Date(), new Date(challenge.startDate)) + 1,
+    differenceInDays(new Date(), tasks[0]?.user.lastActiveDate || new Date()) +
+      1,
     challenge.challenge.duration
   );
 
@@ -346,58 +354,74 @@ const Challenges = ({
               </div>
             </div>
 
-
-            <div className="grid grid-cols-7 gap-2">
-              {dates.reverse().map((date, i) => {
-                const isSelected =
-                  date.toDateString() === selectedDate.toDateString();
-                const isCurrentDay =
-                  date.toDateString() === today.toDateString();
-                const percentage = getCompletionPercentage(date);
-                const isComplete = percentage === 100;
-
-                return (
-                  <motion.div
-                    key={i}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`relative cursor-pointer ${
-                      date <= today ? "" : "opacity-40 pointer-events-none"
-                    }`}
-                    onClick={() => {
-                      if (date <= today) {
-                        setSelectedDate(new Date(date));
-                      }
-                    }}
-                  >
-                    <div
-                      className={`aspect-square rounded-2xl flex flex-col items-center justify-center p-2 transition-all duration-200 ${
-                        isSelected
-                          ? "bg-[#fe8019] text-[#1d2021] shadow-lg"
-                          : isCurrentDay
-                          ? "bg-[#3c3836] text-[#ebdbb2] border border-[#fe8019]"
-                          : "bg-[#282828] text-[#a89984] hover:bg-[#3c3836] border border-[#3c3836]"
-                      }`}
+            <Carousel
+              opts={{
+                startIndex: 7,
+                slidesToScroll: 3,
+                breakpoints: {
+                  "(min-width: 640px)": { slidesToScroll: 5 },
+                  "(min-width: 1024px)": { slidesToScroll: 7 },
+                },
+              }}
+              className="w-full"
+            >
+              <CarouselContent className="gap-2">
+                {dates.reverse().map((date, i) => {
+                  const isSelected =
+                    date.toDateString() === selectedDate.toDateString();
+                  const isCurrentDay =
+                    date.toDateString() === today.toDateString();
+                  const percentage = getCompletionPercentage(date);
+                  const isComplete = percentage === 100;
+                  return (
+                    <CarouselItem
+                      key={i}
+                      className="basis-1/3 sm:basis-1/5 lg:basis-1/7 pl-1"
                     >
-                      <div className="text-xs font-medium mb-1">
-                        {weekdays[i]}
-                      </div>
-                      <div className="text-lg font-bold">{date.getDate()}</div>
-
-                      {percentage > 0 && (
-                        <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2">
-                          <div
-                            className={`w-1.5 h-1.5 rounded-full ${
-                              isComplete ? "bg-[#8ec07c]" : "bg-[#fabd2f]"
-                            }`}
-                          />
+                      <motion.div
+                        key={i}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={`relative cursor-pointer ${
+                          date <= today ? "" : "opacity-40 pointer-events-none"
+                        }`}
+                        onClick={() => {
+                          if (date <= today) {
+                            setSelectedDate(new Date(date));
+                          }
+                        }}
+                      >
+                        <div
+                          className={`aspect-square rounded-lg flex flex-col items-center justify-center p-2 transition-all duration-200 ${
+                            isSelected
+                              ? "bg-[#fe8019] text-[#1d2021] shadow-lg"
+                              : isCurrentDay
+                              ? "bg-[#3c3836] text-[#ebdbb2] border border-[#fe8019]"
+                              : "bg-[#282828] text-[#a89984] hover:bg-[#3c3836] border border-[#3c3836]"
+                          }`}
+                        >
+                          <div className="text-xs font-medium mb-1">
+                            {weekdays[i]}
+                          </div>
+                          <div className="text-lg font-bold">
+                            {date.getDate()}
+                          </div>
+                          {percentage > 0 && (
+                            <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2">
+                              <div
+                                className={`w-1.5 h-1.5 rounded-full ${
+                                  isComplete ? "bg-[#8ec07c]" : "bg-[#fabd2f]"
+                                }`}
+                              />
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
+                      </motion.div>
+                    </CarouselItem>
+                  );
+                })}
+              </CarouselContent>
+            </Carousel>
           </motion.div>
         </div>
 
@@ -454,7 +478,7 @@ const Challenges = ({
                       <Link
                         href={
                           canInteract
-                            ? `/challenges/complete/${dailyTask.id}`
+                            ? `/dashboard/challenges/complete/${dailyTask.id}`
                             : "#"
                         }
                         className="block"
