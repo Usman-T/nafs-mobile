@@ -3,16 +3,16 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Check, 
-  Award, 
-  ArrowRight, 
-  Sparkles, 
-  Flame, 
-  ChevronLeft, 
-  ChevronRight, 
+import {
+  Check,
+  Award,
+  ArrowRight,
+  Sparkles,
+  Flame,
+  ChevronLeft,
+  ChevronRight,
   Calendar,
-  Star
+  Star,
 } from "lucide-react";
 import {
   Challenge,
@@ -36,13 +36,14 @@ import CompletedChallenge from "./completed-challenge";
 
 interface ChallengesProps {
   challenge: UserChallenge & {
-    challenge: Challenge & {
-      tasks: {
-        task: Task & {
-          dimension: Dimension;
+    challenge: Challenge &
+      {
+        tasks: {
+          task: Task & {
+            dimension: Dimension;
+          };
         };
-      };
-    }[];
+      }[];
   };
   tasks: (DailyTask & {
     task: Task & {
@@ -89,22 +90,33 @@ const Challenges = ({
     return date;
   });
 
-  // Get tasks for selected date
+  const generateDateRange = (start: Date, days: number) =>
+    Array.from({ length: days }).map((_, i) => {
+      const date = new Date(start);
+      date.setDate(date.getDate() - i);
+      return date;
+    });
+
+  const dates = generateDateRange(today, 8);
   const selectedDateTasks = tasks.filter(
     (task) => task.date.toDateString() === selectedDate.toDateString()
   );
 
   const completedTasks = selectedDateTasks.filter((task) =>
-    task.completions.some((c) => isSameDay(new Date(c.completedAt), selectedDate))
+    task.completions.some((c) =>
+      isSameDay(new Date(c.completedAt), selectedDate)
+    )
   );
 
   const isToday = selectedDate.toDateString() === today.toDateString();
-  const allTasksCompleted = selectedDateTasks.length > 0 && 
+  const allTasksCompleted =
+    selectedDateTasks.length > 0 &&
     selectedDateTasks.every((task) => task.completions.length > 0);
 
-  const completionPercentage = selectedDateTasks.length > 0 
-    ? (completedTasks.length / selectedDateTasks.length) * 100 
-    : 0;
+  const completionPercentage =
+    selectedDateTasks.length > 0
+      ? (completedTasks.length / selectedDateTasks.length) * 100
+      : 0;
 
   const isTodayCompleted = () => {
     if (!dayCompleted?.date) return false;
@@ -120,7 +132,9 @@ const Challenges = ({
     const dateCompletedTasks = dateTasks.filter((task) =>
       task.completions.some((c) => isSameDay(new Date(c.completedAt), date))
     );
-    return dateTasks.length > 0 ? (dateCompletedTasks.length / dateTasks.length) * 100 : 0;
+    return dateTasks.length > 0
+      ? (dateCompletedTasks.length / dateTasks.length) * 100
+      : 0;
   };
 
   const handleCompletionFlowFinished = async () => {
@@ -153,11 +167,7 @@ const Challenges = ({
   };
 
   const handleShowCompletionFlow = () => {
-    if (
-      allTasksCompleted &&
-      isToday &&
-      !isTodayCompleted()
-    ) {
+    if (allTasksCompleted && isToday && !isTodayCompleted()) {
       setShowCompletionFlow(true);
       localStorage.setItem("nafs-hide-mobile-nav", "true");
       window.dispatchEvent(new Event("storage"));
@@ -204,15 +214,17 @@ const Challenges = ({
         {/* Hero Section */}
         <div className="">
           {/* Greeting */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             className="mb-6"
           >
             <h1 className="text-2xl font-bold text-[#ebdbb2] mb-1">
               {getTimeGreeting()}
             </h1>
-            <p className="text-[#a89984]">Let&apos;s continue your spiritual journey</p>
+            <p className="text-[#a89984]">
+              Let&apos;s continue your spiritual journey
+            </p>
           </motion.div>
 
           {/* Streak & Progress Card */}
@@ -241,7 +253,9 @@ const Challenges = ({
                   />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-[#ebdbb2]">{currentStreak}</div>
+                  <div className="text-2xl font-bold text-[#ebdbb2]">
+                    {currentStreak}
+                  </div>
                   <div className="text-sm text-[#a89984]">Day Streak</div>
                 </div>
               </div>
@@ -250,7 +264,12 @@ const Challenges = ({
                   {Math.round(completionPercentage)}%
                 </div>
                 <div className="text-sm text-[#a89984]">
-                  {isToday ? "Today" : selectedDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                  {isToday
+                    ? "Today"
+                    : selectedDate.toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      })}
                 </div>
               </div>
             </div>
@@ -290,7 +309,9 @@ const Challenges = ({
             className="mb-6"
           >
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-lg font-semibold text-[#ebdbb2]">This Week</h3>
+              <h3 className="text-lg font-semibold text-[#ebdbb2]">
+                This Week
+              </h3>
               <div className="flex items-center gap-1">
                 <Button
                   variant="ghost"
@@ -315,17 +336,23 @@ const Challenges = ({
                       setSelectedDate(nextWeek);
                     }
                   }}
-                  disabled={selectedDate.getTime() + 7 * 24 * 60 * 60 * 1000 > today.getTime()}
+                  disabled={
+                    selectedDate.getTime() + 7 * 24 * 60 * 60 * 1000 >
+                    today.getTime()
+                  }
                 >
                   <ChevronRight className="h-4 w-4" />
                 </Button>
               </div>
             </div>
 
+
             <div className="grid grid-cols-7 gap-2">
-              {currentWeekDates.map((date, i) => {
-                const isSelected = date.toDateString() === selectedDate.toDateString();
-                const isCurrentDay = date.toDateString() === today.toDateString();
+              {dates.reverse().map((date, i) => {
+                const isSelected =
+                  date.toDateString() === selectedDate.toDateString();
+                const isCurrentDay =
+                  date.toDateString() === today.toDateString();
                 const percentage = getCompletionPercentage(date);
                 const isComplete = percentage === 100;
 
@@ -334,7 +361,9 @@ const Challenges = ({
                     key={i}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`relative cursor-pointer ${date <= today ? "" : "opacity-40 pointer-events-none"}`}
+                    className={`relative cursor-pointer ${
+                      date <= today ? "" : "opacity-40 pointer-events-none"
+                    }`}
                     onClick={() => {
                       if (date <= today) {
                         setSelectedDate(new Date(date));
@@ -346,18 +375,22 @@ const Challenges = ({
                         isSelected
                           ? "bg-[#fe8019] text-[#1d2021] shadow-lg"
                           : isCurrentDay
-                            ? "bg-[#3c3836] text-[#ebdbb2] border border-[#fe8019]"
-                            : "bg-[#282828] text-[#a89984] hover:bg-[#3c3836] border border-[#3c3836]"
+                          ? "bg-[#3c3836] text-[#ebdbb2] border border-[#fe8019]"
+                          : "bg-[#282828] text-[#a89984] hover:bg-[#3c3836] border border-[#3c3836]"
                       }`}
                     >
-                      <div className="text-xs font-medium mb-1">{weekdays[i]}</div>
+                      <div className="text-xs font-medium mb-1">
+                        {weekdays[i]}
+                      </div>
                       <div className="text-lg font-bold">{date.getDate()}</div>
 
                       {percentage > 0 && (
                         <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2">
-                          <div className={`w-1.5 h-1.5 rounded-full ${
-                            isComplete ? "bg-[#8ec07c]" : "bg-[#fabd2f]"
-                          }`} />
+                          <div
+                            className={`w-1.5 h-1.5 rounded-full ${
+                              isComplete ? "bg-[#8ec07c]" : "bg-[#fabd2f]"
+                            }`}
+                          />
                         </div>
                       )}
                     </div>
@@ -374,7 +407,10 @@ const Challenges = ({
             <h3 className="text-xl font-bold text-[#ebdbb2]">
               {isToday
                 ? "Today's Tasks"
-                : `${selectedDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}`}
+                : `${selectedDate.toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                  })}`}
             </h3>
             <Badge className="bg-[#fe8019]/20 text-[#fe8019] border border-[#fe8019]/30">
               Day {currentDay}
@@ -392,8 +428,10 @@ const Challenges = ({
             >
               {selectedDateTasks.length > 0 ? (
                 selectedDateTasks.map((dailyTask, i) => {
-                  const IconComponent = iconMap[dailyTask.task.dimension.icon] || iconMap["BookOpen"];
-                  const isCompleted = dailyTask.completions.some((c) => 
+                  const IconComponent =
+                    iconMap[dailyTask.task.dimension.icon] ||
+                    iconMap["BookOpen"];
+                  const isCompleted = dailyTask.completions.some((c) =>
                     isSameDay(new Date(c.completedAt), selectedDate)
                   );
                   const canInteract = isToday;
@@ -408,11 +446,17 @@ const Challenges = ({
                       whileHover={canInteract ? { y: -2 } : {}}
                       whileTap={canInteract ? { scale: 0.98 } : {}}
                       className={`relative bg-[#282828] rounded-2xl p-4 border transition-all duration-200 ${
-                        isCompleted ? "border-[#8ec07c]/50 bg-[#8ec07c]/5" : "border-[#3c3836] hover:border-[#fe8019]/50"
+                        isCompleted
+                          ? "border-[#8ec07c]/50 bg-[#8ec07c]/5"
+                          : "border-[#3c3836] hover:border-[#fe8019]/50"
                       } ${canInteract ? "cursor-pointer" : "opacity-60"}`}
                     >
-                      <Link 
-                        href={canInteract ? `/challenges/complete/${dailyTask.id}` : "#"}
+                      <Link
+                        href={
+                          canInteract
+                            ? `/challenges/complete/${dailyTask.id}`
+                            : "#"
+                        }
                         className="block"
                         onClick={(e) => !canInteract && e.preventDefault()}
                       >
@@ -421,15 +465,21 @@ const Challenges = ({
                           <div className="relative">
                             <motion.div
                               className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-200`}
-                              style={{ 
-                                backgroundColor: isCompleted ? "#8ec07c" : taskColor 
+                              style={{
+                                backgroundColor: isCompleted
+                                  ? "#8ec07c"
+                                  : taskColor,
                               }}
                             >
                               {isCompleted ? (
                                 <motion.div
                                   initial={{ scale: 0, rotate: -90 }}
                                   animate={{ scale: 1, rotate: 0 }}
-                                  transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                                  transition={{
+                                    type: "spring",
+                                    stiffness: 500,
+                                    damping: 15,
+                                  }}
                                 >
                                   <Check className="h-6 w-6 text-[#1d2021]" />
                                 </motion.div>
@@ -444,7 +494,9 @@ const Challenges = ({
                             <div className="flex items-center justify-between mb-1">
                               <h4
                                 className={`font-semibold transition-all duration-200 ${
-                                  isCompleted ? "text-[#a89984] line-through" : "text-[#ebdbb2]"
+                                  isCompleted
+                                    ? "text-[#a89984] line-through"
+                                    : "text-[#ebdbb2]"
                                 }`}
                               >
                                 {dailyTask.task.name}
@@ -478,12 +530,15 @@ const Challenges = ({
                   className="bg-[#282828] rounded-2xl p-8 border border-[#3c3836] text-center"
                 >
                   <Calendar className="w-12 h-12 text-[#a89984] mx-auto mb-4 opacity-60" />
-                  <p className="text-[#a89984] text-lg mb-2">No tasks scheduled</p>
+                  <p className="text-[#a89984] text-lg mb-2">
+                    No tasks scheduled
+                  </p>
                   <p className="text-[#a89984] text-sm">
-                    for {selectedDate.toLocaleDateString("en-US", { 
-                      weekday: "long", 
-                      month: "long", 
-                      day: "numeric" 
+                    for{" "}
+                    {selectedDate.toLocaleDateString("en-US", {
+                      weekday: "long",
+                      month: "long",
+                      day: "numeric",
                     })}
                   </p>
                 </motion.div>
@@ -507,7 +562,9 @@ const Challenges = ({
               >
                 <div className="flex items-center justify-center gap-3">
                   <Award className="h-6 w-6" />
-                  <span>{isCompletingDay ? "Completing..." : "Complete Day"}</span>
+                  <span>
+                    {isCompletingDay ? "Completing..." : "Complete Day"}
+                  </span>
                   <Sparkles className="h-5 w-5" />
                 </div>
               </Button>
@@ -548,8 +605,12 @@ const Challenges = ({
                 <Award className="w-5 h-5 text-[#fe8019]" />
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-[#ebdbb2]">{challenge.challenge.name}</h4>
-                <p className="text-sm text-[#a89984]">{challenge.challenge.description}</p>
+                <h4 className="font-semibold text-[#ebdbb2]">
+                  {challenge.challenge.name}
+                </h4>
+                <p className="text-sm text-[#a89984]">
+                  {challenge.challenge.description}
+                </p>
               </div>
               <div className="text-right">
                 <div className="text-sm font-semibold text-[#fe8019]">
@@ -564,18 +625,23 @@ const Challenges = ({
               <div className="flex justify-between text-sm mb-2">
                 <span className="text-[#a89984]">Challenge Progress</span>
                 <span className="text-[#ebdbb2]">
-                  {Math.round((currentStreak / challenge.challenge.duration) * 100)}%
+                  {Math.round(
+                    (currentStreak / challenge.challenge.duration) * 100
+                  )}
+                  %
                 </span>
               </div>
               <div className="flex space-x-1">
-                {Array.from({ length: challenge.challenge.duration }).map((_, i) => (
-                  <div
-                    key={i}
-                    className={`h-2 flex-1 rounded-full ${
-                      i < currentStreak ? "bg-[#fe8019]" : "bg-[#3c3836]"
-                    }`}
-                  />
-                ))}
+                {Array.from({ length: challenge.challenge.duration }).map(
+                  (_, i) => (
+                    <div
+                      key={i}
+                      className={`h-2 flex-1 rounded-full ${
+                        i < currentStreak ? "bg-[#fe8019]" : "bg-[#3c3836]"
+                      }`}
+                    />
+                  )
+                )}
               </div>
             </div>
           </motion.div>
