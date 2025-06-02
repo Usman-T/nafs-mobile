@@ -3,9 +3,6 @@
 import type React from "react";
 import Link from "next/link";
 import {
-  Moon,
-  LayoutDashboard,
-  Award,
   Calendar,
   BarChart3,
   Settings,
@@ -30,6 +27,7 @@ import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import Logo from "@/components/custom/logo";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -171,7 +169,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <div className="sticky top-0 z-10 hidden h-screen w-64 flex-col border-r border-[#2e2e2e] bg-[#1d2021] md:flex">
         <div className="flex h-16 items-center border-b border-[#2e2e2e] px-6">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <Moon className="h-6 w-6 text-[#fe8019]" />
+            <Logo className="h-6 w-6 text-[#fe8019]" />
             <span className="text-xl font-bold text-[#e0e0e0]">Nafs</span>
           </Link>
         </div>
