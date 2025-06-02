@@ -102,38 +102,6 @@ const quickAccessFeatures = [
   },
 ];
 
-const recentActivity = [
-  {
-    id: 1,
-    type: "reflection",
-    title: "Added reflection on Al-Fatihah 1:2",
-    description: "Reflected on gratitude and praise",
-    time: "2 hours ago",
-    icon: MessageSquare,
-    color: "#83a598",
-    route: "/dashboard/guidance/ayah/1/2",
-  },
-  {
-    id: 2,
-    type: "audio",
-    title: "Listened to Al-Fatihah",
-    description: "Complete surah with Mishary Alafasy",
-    time: "5 hours ago",
-    icon: Headphones,
-    color: "#8ec07c",
-    route: "/dashboard/guidance/audio/1",
-  },
-  {
-    id: 3,
-    type: "bookmark",
-    title: "Saved Al-Fatihah 1:6",
-    description: "Added to guidance collection",
-    time: "Yesterday",
-    icon: Bookmark,
-    color: "#fabd2f",
-    route: "/dashboard/guidance/ayah/1/6",
-  },
-];
 
 const featuredSurahs = [
   {
@@ -460,71 +428,6 @@ const QuickAccessSection = ({
   );
 };
 
-// Recent Activity Component
-const RecentActivitySection = ({
-  activities,
-}: {
-  activities: typeof recentActivity;
-}) => {
-  const router = useRouter();
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
-  return (
-    <Card className="bg-[#282828] border-[#3c3836]">
-      <CardContent className="">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-base font-semibold text-[#ebdbb2] flex items-center">
-            <Clock className="h-4 w-4 mr-2 text-[#fe8019]" />
-            Recent Activity
-          </h3>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => router.push("/dashboard/guidance/activity")}
-            className="text-[#a89984] hover:text-[#ebdbb2] h-7 px-2 text-xs"
-          >
-            View All
-          </Button>
-        </div>
-
-        <div ref={ref} className="space-y-2">
-          {activities.map((activity) => (
-            <div
-              key={activity.id}
-              className="flex items-center gap-3 p-3 rounded-lg bg-[#1d2021] border border-[#3c3836] hover:border-[#504945] transition-colors cursor-pointer"
-              onClick={() => router.push(activity.route)}
-            >
-              <div
-                className="h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: `${activity.color}20` }}
-              >
-                <activity.icon
-                  className="h-4 w-4"
-                  style={{ color: activity.color }}
-                />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-[#ebdbb2] text-sm font-medium truncate">
-                  {activity.title}
-                </p>
-                <p className="text-[#a89984] text-xs truncate">
-                  {activity.description}
-                </p>
-              </div>
-              <div className="text-right flex-shrink-0">
-                <p className="text-xs text-[#a89984]">{activity.time}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
-
 // Featured Surahs Component
 const FeaturedSurahsSection = ({
   surahs,
@@ -697,14 +600,6 @@ export default function GuidancePage() {
         <QuickAccessSection features={quickAccessFeatures} />
       </div>
 
-      {/* Recent Activity */}
-      <Suspense
-        fallback={
-          <div className="h-40 bg-[#282828] rounded-lg animate-pulse"></div>
-        }
-      >
-        <RecentActivitySection activities={recentActivity} />
-      </Suspense>
 
       {/* Featured Surahs */}
       <Suspense
