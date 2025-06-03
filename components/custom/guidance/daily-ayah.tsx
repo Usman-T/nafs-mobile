@@ -18,15 +18,32 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-const DailyAyahSection = ({ ayah }) => {
+const DailyAyahSection = ({ apiVerse }) => {
+  function mapAyah(apiVerse) {
+    console.log(apiVerse)
+    return {
+      arabic: apiVerse.text_uthmani_simple,
+      translation: apiVerse.translations?.[0]?.text || "",
+      reference: `Surah ${apiVerse.chapter_id}, Ayah ${apiVerse.verse_number}`,
+      transliteration: "", 
+      theme: "", 
+      reflection: "", 
+      surahId: apiVerse.chapter_id,
+      ayahId: apiVerse.verse_number,
+      tafsir: apiVerse.tafsirs?.[0]?.text || "",
+    };
+  }
+  const ayah = mapAyah(apiVerse);
+  console.log(ayah)
+
+  const [reflection, setReflection] = useState(ayah.reflection);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showTafsir, setShowTafsir] = useState(false);
   const [showReflection, setShowReflection] = useState(false);
-  const [reflection, setReflection] = useState(ayah.reflection);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [showSharing, setShowSharing] = useState(false);
 
-  const router = useRouter();
+  const router = useRouter()
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -36,9 +53,11 @@ const DailyAyahSection = ({ ayah }) => {
     setShowReflection(false);
   };
 
+
   const navigateToVerse = () => {
     router.push(`/dashboard/guidance/ayah/${ayah.surahId}/${ayah.ayahId}`);
   };
+
 
   return (
     <>
@@ -66,7 +85,7 @@ const DailyAyahSection = ({ ayah }) => {
             onClick={navigateToVerse}
           >
             <p className="text-xl sm:text-2xl text-[#fe8019] text-right font-arabic leading-loose mb-3">
-              {ayah.arabic}
+              {ayah.text_uthmani}
             </p>
             <p className="text-[#ebdbb2] text-sm sm:text-base mb-2">
               "{ayah.translation}"

@@ -5,7 +5,7 @@ export async function fetchRandomVerse() {
   try {
     const token = await getQuranApiToken();
     // const verseKey = Math.floor(Math.random() * 114) + 1 + ':' + Math.floor(Math.random() * 4) + 1;
-    const verseKey = "1:2";
+    const verseKey = "1:1";
     console.log({ verseKey });
 
     const config = {
@@ -17,11 +17,18 @@ export async function fetchRandomVerse() {
         "x-auth-token": token,
         "x-client-id": process.env.QURAN_API_CLIENT_ID!,
       },
+      params: {
+        language: "english",
+        words: true,
+        translations: 85,
+        tafsirs: 1,
+        fields: "text_uthmani,text_imlaei,text_indopak,text_uthmani_simple",
+      },
     };
 
     const response = await axios(config);
 
-    return response.data;
+    return response.data.verse;
   } catch (error) {
     console.error("Error fetching random verse:", error);
     throw error;
