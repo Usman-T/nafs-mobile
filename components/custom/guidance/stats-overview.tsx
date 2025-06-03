@@ -20,31 +20,27 @@ const StatsOverview = ({ stats }) => {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="grid text-center gap-3 grid-cols-2">
       {statItems.map((stat, index) => (
-        <div key={stat.label}>
-          <Card className="bg-[#282828] border-[#3c3836] relative overflow-hidden group hover:border-[#504945] transition-colors">
-            <CardContent className="p-3 sm:p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xl font-bold text-[#ebdbb2]">
-                    {stat.value}
-                  </p>
-                  <p className="text-xs text-[#a89984]">{stat.label}</p>
-                </div>
-                <div
-                  className="h-8 w-8 rounded-full flex items-center justify-center"
-                  style={{ backgroundColor: `${stat.color}20` }}
-                >
-                  <stat.icon
-                    className="h-4 w-4"
-                    style={{ color: stat.color }}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        <Card
+          key={stat.label}
+          className="bg-[#282828] border-[#3c3836] relative overflow-hidden group hover:border-[#504945] transition-colors flex-1"
+        >
+          <CardContent className="flex items-center gap-4">
+            <div
+              className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0"
+              style={{ backgroundColor: `${stat.color}20` }}
+            >
+              <stat.icon className="h-6 w-6" style={{ color: stat.color }} />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xl font-bold text-[#ebdbb2] leading-tight">
+                {stat.value}
+              </span>
+              <span className="text-xs text-[#a89984]">{stat.label}</span>
+            </div>
+          </CardContent>
+        </Card>
       ))}
     </div>
   );

@@ -1,5 +1,6 @@
 import React from "react";
 import DailyAyahSection from "../daily-ayah";
+import { fetchRandomVerse } from "@/lib/guidance";
 
 const dailyAyah = {
   id: 1,
@@ -17,7 +18,10 @@ const dailyAyah = {
   reflection: "",
 };
 
-const DailyAyahWrapper = () => {
+const DailyAyahWrapper = async () => {
+  const dailyAyahFetched = await fetchRandomVerse(); 
+  console.log("fetched ayah", dailyAyahFetched);
+
   return (
     <>
       <DailyAyahSection ayah={dailyAyah} />

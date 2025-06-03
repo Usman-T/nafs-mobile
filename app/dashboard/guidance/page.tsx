@@ -18,13 +18,13 @@ const GuidancePage = () => {
         <p className="text-[#a89984] text-sm">Your journey through the Quran</p>
       </div>
       <CommandPaletteProvider>
-        <Search />
+        <Search  />
         <CommandPaletteWrapper />
       </CommandPaletteProvider>
       <Suspense>
         <StatsOverviewWrapper />
       </Suspense>
-      M
+      
       <Suspense
         fallback={
           <div className="h-40 bg-[#282828] rounded-lg animate-pulse"></div>

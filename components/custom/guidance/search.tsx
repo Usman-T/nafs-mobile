@@ -9,7 +9,7 @@ import { useCommandPalette } from "@/components/custom/guidance/context/command-
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const { setOpen } = useCommandPalette(); // Use context
+  const { setOpen } = useCommandPalette();
 
   return (
     <div className="relative">
@@ -21,7 +21,11 @@ const Search = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => setIsSearchFocused(true)}
           onBlur={() => setIsSearchFocused(false)}
-          onClick={() => setOpen(true)} // Open command palette directly
+          onClick={() => {
+            localStorage.setItem("nafs-hide-mobile-nav", "true");
+            window.dispatchEvent(new Event("storage"));
+            setOpen(true);
+          }}
           className={`pl-9 pr-4 py-5 text-sm bg-[#282828] border-[#3c3836] text-[#ebdbb2] placeholder:text-[#a89984] transition-all ${
             isSearchFocused ? "border-[#fe8019]" : ""
           }`}
