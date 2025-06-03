@@ -108,3 +108,38 @@ If completions are all in consecutive *duration* days then we say "challenge com
 
 Nice the UI is made, we just gotta fix up all the steps. We do that one step at a time
 Like dont just go ahead and fix every fucking error in there, wire up each and every step one by one
+
+## TODOs:
+  ### feat: Guidance Page:
+    - Fetch random ayah from Quran API and display on home screen
+    - Make daily ayah show up properly
+    - Add tafsir section to it
+    - Update database to create the following options for users:
+       - Saved Ayahs
+       - Reflections
+       - Recent Surahs (3) + Progression
+       - Reading streak
+    - View all Chapter (surahs) page to read
+    - View all Chapter (surahs) page to listen
+    - Specific Surah page (read):
+      - Make Drawer trigger in the header
+      - Show info regarding the surah in (i) icon
+      - Fetch and map Verses on the page and (x) option
+      - Create an action to create reflection of specific ayah with reference to user
+      - Create action to save ayahId with reference to the user 
+    - Fetch all reflections of user and display on /refs
+    - Fetch all saved of user and display on /saved
+    - Create specific ayah page by fetching a single ayah
+    - IF REFLECTION ALREADY EXISTS, SHOW (SHOW REFLECTION) button instead of creating one
+    - Audio page pointed to by the /audio will now fetch the surah info and show it for now
+    - Hook up the Quran API CDN with it and use an <audio> tag
+    - Then add audio suport for specific ayah page
+    - Similarly use the CDN to make them work on the specific surah page
+    - Create the command pallete search function which points to surahs and ayahs
+    - Map the results of query properly
+  
+  ### fix: Bugs to be Fixed
+    - Mobile users can "pinch zoom"
+    - Remove Header and Footer on search and guidance pages
+    - Onboarding shows up everytime the user opens app then redirects
+    - Better offline page support
