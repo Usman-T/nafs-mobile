@@ -220,7 +220,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     );
   };
 
-  const isSurahPage = pathname.startsWith("/dashboard/guidance/surah/");
+  const isSurahPage = pathname.startsWith("/dashboard/guidance/surah/") || pathname.startsWith("/dashboard/guidance/ayah/") || pathname.startsWith("/dashboard/guidance/audio/") || pathname.startsWith("/dashboard/guidance/reflections");
 
   return (
     <div className="md:flex bg-[#1d2021] min-h-screen ">

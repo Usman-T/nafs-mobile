@@ -1,11 +1,11 @@
 import type React from "react";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { SessionProvider } from "next-auth/react";
 
-const inter = Inter({ subsets: ["latin"] });
+const geist = Geist({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Nafs - Islamic Spiritual Growth Tracker",
@@ -75,7 +75,7 @@ export default function RootLayout({
         <meta name="application-name" content="Nafs" />
         <meta name="msapplication-TileColor" content="#000000" />
       </head>
-      <body className={`${inter.className} `}>
+      <body className={`${geist.className}  bg-[#1d2021] text-[#ebdbb2] `}>
         <SessionProvider>
           <Toaster />
           {children}

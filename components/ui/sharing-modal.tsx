@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent } from "@/components/ui/card"
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   X,
   Copy,
@@ -19,65 +19,88 @@ import {
   Palette,
   Type,
   Sparkles,
-} from "lucide-react"
+} from "lucide-react";
 
 interface SharingModalProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
   content: {
-    arabic: string
-    translation: string
-    reference: string
-    type: "verse" | "reflection" | "surah"
-  }
+    arabic: string;
+    translation: string;
+    reference: string;
+    type: "verse" | "reflection" | "surah";
+  };
 }
 
 const backgroundStyles = [
-  { id: 1, name: "Gradient", bg: "linear-gradient(135deg, #fe8019 0%, #fabd2f 100%)" },
-  { id: 2, name: "Islamic", bg: "linear-gradient(135deg, #8ec07c 0%, #83a598 100%)" },
-  { id: 3, name: "Night", bg: "linear-gradient(135deg, #1d2021 0%, #282828 100%)" },
-  { id: 4, name: "Elegant", bg: "linear-gradient(135deg, #d3869b 0%, #fe8019 100%)" },
-]
+  {
+    id: 1,
+    name: "Gradient",
+    bg: "linear-gradient(135deg, #fe8019 0%, #fabd2f 100%)",
+  },
+  {
+    id: 2,
+    name: "Islamic",
+    bg: "linear-gradient(135deg, #8ec07c 0%, #83a598 100%)",
+  },
+  {
+    id: 3,
+    name: "Night",
+    bg: "linear-gradient(135deg, #1d2021 0%, #282828 100%)",
+  },
+  {
+    id: 4,
+    name: "Elegant",
+    bg: "linear-gradient(135deg, #d3869b 0%, #fe8019 100%)",
+  },
+];
 
 const fontStyles = [
   { id: 1, name: "Classic", font: "font-serif" },
   { id: 2, name: "Modern", font: "font-sans" },
   { id: 3, name: "Arabic", font: "font-arabic" },
   { id: 4, name: "Elegant", font: "font-mono" },
-]
+];
 
-export default function SharingModal({ isOpen, onClose, content }: SharingModalProps) {
-  const [selectedBackground, setSelectedBackground] = useState(1)
-  const [selectedFont, setSelectedFont] = useState(1)
-  const [customMessage, setCustomMessage] = useState("")
-  const [copied, setCopied] = useState(false)
-  const [shareFormat, setShareFormat] = useState<"text" | "image">("text")
+export default function SharingModal({
+  isOpen,
+  onClose,
+  content,
+}: SharingModalProps) {
+  const [selectedBackground, setSelectedBackground] = useState(1);
+  const [selectedFont, setSelectedFont] = useState(1);
+  const [customMessage, setCustomMessage] = useState("");
+  const [copied, setCopied] = useState(false);
+  const [shareFormat, setShareFormat] = useState<"text" | "image">("text");
 
+  localStorage.setItem("nafs-hide-mobile-nav", "true");
   const handleCopy = () => {
-    const shareText = `${content.arabic}\n\n"${content.translation}"\n\n- ${content.reference}\n\n${customMessage}`
-    navigator.clipboard.writeText(shareText)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+    const shareText = `${content.arabic}\n\n"${content.translation}"\n\n- ${content.reference}\n\n${customMessage}`;
+    navigator.clipboard.writeText(shareText);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handleShare = (platform: string) => {
-    const shareText = `${content.arabic}\n\n"${content.translation}"\n\n- ${content.reference}\n\n${customMessage}`
-    const encodedText = encodeURIComponent(shareText)
+    const shareText = `${content.arabic}\n\n"${content.translation}"\n\n- ${content.reference}\n\n${customMessage}`;
+    const encodedText = encodeURIComponent(shareText);
 
     const urls = {
       twitter: `https://twitter.com/intent/tweet?text=${encodedText}`,
       facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedText}`,
       whatsapp: `https://wa.me/?text=${encodedText}`,
       email: `mailto:?subject=Beautiful Quran Verse&body=${encodedText}`,
-    }
+    };
 
     if (urls[platform as keyof typeof urls]) {
-      window.open(urls[platform as keyof typeof urls], "_blank")
+      window.open(urls[platform as keyof typeof urls], "_blank");
     }
-  }
+  };
 
-  const selectedBg = backgroundStyles.find((bg) => bg.id === selectedBackground)
-  const selectedFontStyle = fontStyles.find((font) => font.id === selectedFont)
+  const selectedBg = backgroundStyles.find(
+    (bg) => bg.id === selectedBackground
+  );
+  const selectedFontStyle = fontStyles.find((font) => font.id === selectedFont);
 
   return (
     <AnimatePresence>
@@ -119,7 +142,9 @@ export default function SharingModal({ isOpen, onClose, content }: SharingModalP
                     size="sm"
                     onClick={() => setShareFormat("text")}
                     className={
-                      shareFormat === "text" ? "bg-[#fe8019] text-[#1d2021]" : "border-[#3c3836] text-[#a89984]"
+                      shareFormat === "text"
+                        ? "bg-[#fe8019] text-[#1d2021]"
+                        : "border-[#3c3836] text-[#a89984]"
                     }
                   >
                     <Type className="h-4 w-4 mr-2" />
@@ -130,7 +155,9 @@ export default function SharingModal({ isOpen, onClose, content }: SharingModalP
                     size="sm"
                     onClick={() => setShareFormat("image")}
                     className={
-                      shareFormat === "image" ? "bg-[#fe8019] text-[#1d2021]" : "border-[#3c3836] text-[#a89984]"
+                      shareFormat === "image"
+                        ? "bg-[#fe8019] text-[#1d2021]"
+                        : "border-[#3c3836] text-[#a89984]"
                     }
                   >
                     <ImageIcon className="h-4 w-4 mr-2" />
@@ -148,14 +175,22 @@ export default function SharingModal({ isOpen, onClose, content }: SharingModalP
                       <div className="absolute inset-0 bg-black/20" />
                       <div className="relative z-10 space-y-6">
                         <div className="space-y-4">
-                          <p className={`text-2xl text-white leading-loose ${selectedFontStyle?.font}`}>
+                          <p
+                            className={`text-2xl text-white leading-loose ${selectedFontStyle?.font}`}
+                          >
                             {content.arabic}
                           </p>
-                          <p className="text-lg text-white/90 italic">"{content.translation}"</p>
-                          <p className="text-white/80 font-medium">- {content.reference}</p>
+                          <p className="text-lg text-white/90 italic">
+                            "{content.translation}"
+                          </p>
+                          <p className="text-white/80 font-medium">
+                            - {content.reference}
+                          </p>
                         </div>
                         {customMessage && (
-                          <p className="text-white/70 text-sm border-t border-white/20 pt-4">{customMessage}</p>
+                          <p className="text-white/70 text-sm border-t border-white/20 pt-4">
+                            {customMessage}
+                          </p>
                         )}
                         <div className="flex items-center justify-center">
                           <Sparkles className="h-4 w-4 text-white/60" />
@@ -166,11 +201,19 @@ export default function SharingModal({ isOpen, onClose, content }: SharingModalP
                 ) : (
                   <Card className="bg-[#1d2021] border-[#3c3836]">
                     <CardContent className="p-6 space-y-4">
-                      <p className="text-xl font-arabic text-[#fe8019] text-right leading-loose">{content.arabic}</p>
-                      <p className="text-[#ebdbb2] italic">"{content.translation}"</p>
-                      <p className="text-[#a89984] font-medium">- {content.reference}</p>
+                      <p className="text-xl font-arabic text-[#fe8019] text-right leading-loose">
+                        {content.arabic}
+                      </p>
+                      <p className="text-[#ebdbb2] italic">
+                        "{content.translation}"
+                      </p>
+                      <p className="text-[#a89984] font-medium">
+                        - {content.reference}
+                      </p>
                       {customMessage && (
-                        <p className="text-[#a89984] text-sm border-t border-[#3c3836] pt-4">{customMessage}</p>
+                        <p className="text-[#a89984] text-sm border-t border-[#3c3836] pt-4">
+                          {customMessage}
+                        </p>
                       )}
                     </CardContent>
                   </Card>
@@ -179,11 +222,15 @@ export default function SharingModal({ isOpen, onClose, content }: SharingModalP
 
               {/* Customization */}
               <div className="space-y-6">
-                <h3 className="text-lg font-medium text-[#ebdbb2]">Customize</h3>
+                <h3 className="text-lg font-medium text-[#ebdbb2]">
+                  Customize
+                </h3>
 
                 {/* Custom Message */}
                 <div>
-                  <label className="text-sm font-medium text-[#a89984] mb-2 block">Add Personal Message</label>
+                  <label className="text-sm font-medium text-[#a89984] mb-2 block">
+                    Add Personal Message
+                  </label>
                   <Textarea
                     placeholder="Share your thoughts or add context..."
                     value={customMessage}
@@ -206,7 +253,9 @@ export default function SharingModal({ isOpen, onClose, content }: SharingModalP
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           className={`h-16 rounded-lg cursor-pointer border-2 ${
-                            selectedBackground === bg.id ? "border-[#fe8019]" : "border-[#3c3836]"
+                            selectedBackground === bg.id
+                              ? "border-[#fe8019]"
+                              : "border-[#3c3836]"
                           }`}
                           style={{ background: bg.bg }}
                           onClick={() => setSelectedBackground(bg.id)}
@@ -233,11 +282,15 @@ export default function SharingModal({ isOpen, onClose, content }: SharingModalP
                       {fontStyles.map((font) => (
                         <Button
                           key={font.id}
-                          variant={selectedFont === font.id ? "default" : "outline"}
+                          variant={
+                            selectedFont === font.id ? "default" : "outline"
+                          }
                           size="sm"
                           onClick={() => setSelectedFont(font.id)}
                           className={
-                            selectedFont === font.id ? "bg-[#fe8019] text-[#1d2021]" : "border-[#3c3836] text-[#a89984]"
+                            selectedFont === font.id
+                              ? "bg-[#fe8019] text-[#1d2021]"
+                              : "border-[#3c3836] text-[#a89984]"
                           }
                         >
                           {font.name}
@@ -249,12 +302,21 @@ export default function SharingModal({ isOpen, onClose, content }: SharingModalP
 
                 {/* Share Actions */}
                 <div>
-                  <label className="text-sm font-medium text-[#a89984] mb-3 block">Share Options</label>
+                  <label className="text-sm font-medium text-[#a89984] mb-3 block">
+                    Share Options
+                  </label>
 
                   {/* Copy Link */}
                   <div className="mb-4">
-                    <Button onClick={handleCopy} className="w-full bg-[#8ec07c] text-[#1d2021] hover:bg-[#8ec07c]/90">
-                      {copied ? <Check className="h-4 w-4 mr-2" /> : <Copy className="h-4 w-4 mr-2" />}
+                    <Button
+                      onClick={handleCopy}
+                      className="w-full bg-[#8ec07c] text-[#1d2021] hover:bg-[#8ec07c]/90"
+                    >
+                      {copied ? (
+                        <Check className="h-4 w-4 mr-2" />
+                      ) : (
+                        <Copy className="h-4 w-4 mr-2" />
+                      )}
                       {copied ? "Copied!" : "Copy Text"}
                     </Button>
                   </div>
@@ -302,7 +364,10 @@ export default function SharingModal({ isOpen, onClose, content }: SharingModalP
                   {/* Download Image */}
                   {shareFormat === "image" && (
                     <div className="mt-4">
-                      <Button variant="outline" className="w-full border-[#3c3836] text-[#a89984] hover:text-[#ebdbb2]">
+                      <Button
+                        variant="outline"
+                        className="w-full border-[#3c3836] text-[#a89984] hover:text-[#ebdbb2]"
+                      >
                         <Download className="h-4 w-4 mr-2" />
                         Download Image
                       </Button>
@@ -315,5 +380,5 @@ export default function SharingModal({ isOpen, onClose, content }: SharingModalP
         </motion.div>
       )}
     </AnimatePresence>
-  )
+  );
 }

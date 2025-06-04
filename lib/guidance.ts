@@ -2,7 +2,6 @@ import axios from "axios";
 import { getQuranApiToken } from "./token";
 
 export async function fetchRandomVerse() {
-  try {
     const token = await getQuranApiToken();
     // const verseKey = Math.floor(Math.random() * 114) + 1 + ':' + Math.floor(Math.random() * 4) + 1;
     const verseKey = "1:1";
@@ -20,17 +19,18 @@ export async function fetchRandomVerse() {
       params: {
         language: "english",
         words: true,
-        translations: 85,
-        tafsirs: 1,
+        translations: "85",
+        tafsirs: "169",
         fields: "text_uthmani,text_imlaei,text_indopak,text_uthmani_simple",
       },
     };
 
-    const response = await axios(config);
-
-    return response.data.verse;
-  } catch (error) {
-    console.error("Error fetching random verse:", error);
-    throw error;
-  }
+    try {
+      
+      const response = await axios(config);
+    return response.data.verse;}
+    catch(error) {
+      console.error("Error fetching random verse:", error.response);
+      throw new Error("Failed to fetch random verse");
+    }
 }
