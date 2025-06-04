@@ -8,6 +8,7 @@ import {
   MessageSquare,
   Headphones,
   TrendingUp,
+  BookOpen,
 } from "lucide-react";
 
 const userStats = {
@@ -54,9 +55,9 @@ const features = [
     id: "progress",
     title: "Reading Progress",
     description: "Track your Quran journey",
-    icon: TrendingUp,
+    icon: BookOpen,
     color: "#d3869b",
-    route: "/dashboard/guidance/progress",
+    route: "/dashboard/guidance/surah",
     stats: `${userStats.completedSurahs} surahs completed`,
     badge: null,
   },

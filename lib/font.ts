@@ -1,6 +1,6 @@
-import { IBM_Plex_Sans_Arabic } from "next/font/google";
+import { Noto_Nastaliq_Urdu } from "next/font/google";
 
-export const arabicFont = IBM_Plex_Sans_Arabic({
+export const arabicFont = Noto_Nastaliq_Urdu({
   weight: ["400", "700"],
   subsets: ["arabic"],
   display: "swap",

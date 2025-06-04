@@ -1,3 +1,5 @@
+"use client";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +20,7 @@ import {
   Lightbulb,
 } from "lucide-react";
 import { useState } from "react";
+import { arabicFontClass } from "@/lib/font";
 
 type WordByWord = {
   arabic: string;
@@ -62,8 +65,9 @@ const AyahContent = ({ verse, ayahId }: AyahContentProps) => {
   const handleSaveReflection = () => {
     setShowReflection(false);
   };
+
   return (
-    <div className="relative z-10 max-w-4xl mx-auto p-6">
+    <div className="relative z-10 max-w-4xl mx-auto p-4 sm:">
       {/* Verse Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -71,7 +75,7 @@ const AyahContent = ({ verse, ayahId }: AyahContentProps) => {
         className="mb-8"
       >
         <Card className="bg-gradient-to-br from-[#282828] to-[#1d2021] border-[#3c3836] relative overflow-hidden">
-          <CardContent className="p-8">
+          <CardContent className=" sm:p-8">
             {/* Verse Number Badge */}
             <div className="flex justify-center mb-6">
               <Badge className="bg-[#fe8019] text-[#1d2021] text-lg px-4 py-2">
@@ -82,7 +86,7 @@ const AyahContent = ({ verse, ayahId }: AyahContentProps) => {
             {/* Arabic Text */}
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="text-center mb-6"
+              className={`text-center mb-6 ${arabicFontClass}`}
             >
               <p
                 className="font-arabic text-[#fe8019] leading-loose mb-4"
@@ -97,101 +101,78 @@ const AyahContent = ({ verse, ayahId }: AyahContentProps) => {
               <p className="text-xl text-[#ebdbb2] italic mb-2">
                 "{verse.translation}"
               </p>
-              <p className="text-[#a89984]">{verse.transliteration}</p>
+              {verse.transliteration && (
+                <p className="text-[#a89984]">{verse.transliteration}</p>
+              )}
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap justify-center gap-3 mb-6">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="bg-[#8ec07c] text-[#1d2021] hover:bg-[#8ec07c]/90"
-                >
-                  {isPlaying ? (
-                    <PauseCircle className="h-4 w-4 mr-2" />
-                  ) : (
-                    <PlayCircle className="h-4 w-4 mr-2" />
-                  )}
-                  {isPlaying ? "Pause" : "Listen"}
-                </Button>
-              </motion.div>
-
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button
-                  variant="outline"
-                  onClick={() => setIsBookmarked(!isBookmarked)}
-                  className={`border-[#3c3836] ${
-                    isBookmarked
-                      ? "text-[#fabd2f] bg-[#3c3836]"
-                      : "text-[#a89984] hover:text-[#ebdbb2] hover:bg-[#3c3836]"
-                  }`}
-                >
-                  <Bookmark
-                    className={`h-4 w-4 mr-2 ${
-                      isBookmarked ? "fill-current" : ""
-                    }`}
-                  />
-                  {isBookmarked ? "Saved" : "Save"}
-                </Button>
-              </motion.div>
-
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button
-                  variant="outline"
-                  onClick={handleCopy}
-                  className="border-[#3c3836] text-[#a89984] hover:text-[#ebdbb2] hover:bg-[#3c3836]"
-                >
-                  {copied ? (
-                    <Check className="h-4 w-4 mr-2" />
-                  ) : (
-                    <Copy className="h-4 w-4 mr-2" />
-                  )}
-                  {copied ? "Copied!" : "Copy"}
-                </Button>
-              </motion.div>
-
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button
-                  variant="outline"
-                  className="border-[#3c3836] text-[#a89984] hover:text-[#ebdbb2] hover:bg-[#3c3836]"
-                >
-                  <Share2 className="h-4 w-4 mr-2" />
-                  Share
-                </Button>
-              </motion.div>
-            </div>
-
-            {/* Toggle Buttons */}
-            <div className="flex justify-center gap-3">
+            <div className="flex justify-center gap-2 mb-4">
               <Button
                 variant="ghost"
-                size="sm"
-                onClick={() => setShowWordByWord(!showWordByWord)}
-                className="text-[#a89984] hover:text-[#ebdbb2]"
+                size="icon"
+                className="h-8 w-8 rounded-full text-[#a89984] hover:text-[#ebdbb2] hover:bg-[#3c3836]"
+                onClick={() => setIsPlaying((v) => !v)}
+                aria-label={isPlaying ? "Pause" : "Play"}
               >
-                <Eye className="h-4 w-4 mr-2" />
-                Word by Word
+                {isPlaying ? (
+                  <PauseCircle className="h-5 w-5" />
+                ) : (
+                  <PlayCircle className="h-5 w-5" />
+                )}
               </Button>
               <Button
                 variant="ghost"
-                size="sm"
-                onClick={() => setShowReflection(!showReflection)}
-                className="text-[#a89984] hover:text-[#ebdbb2]"
+                size="icon"
+                className={`h-8 w-8 rounded-full ${
+                  isBookmarked ? "text-[#fabd2f]" : "text-[#a89984]"
+                } hover:text-[#fe8019] hover:bg-[#3c3836]`}
+                onClick={() => setIsBookmarked((v) => !v)}
+                aria-label="Bookmark"
               >
-                <MessageSquare className="h-4 w-4 mr-2" />
-                Reflect
+                <Bookmark className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className={`h-8 w-8 rounded-full ${
+                  copied ? "text-[#8ec07c]" : "text-[#a89984]"
+                } hover:text-[#fe8019] hover:bg-[#3c3836]`}
+                onClick={handleCopy}
+                aria-label="Copy"
+              >
+                {copied ? (
+                  <Check className="h-5 w-5" />
+                ) : (
+                  <Copy className="h-5 w-5" />
+                )}
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 rounded-full text-[#a89984] hover:text-[#fe8019] hover:bg-[#3c3836]"
+                onClick={() => setShowReflection((v) => !v)}
+                aria-label="Reflect"
+              >
+                <MessageSquare className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 rounded-full text-[#a89984] hover:text-[#fe8019] hover:bg-[#3c3836]"
+                onClick={() => setShowWordByWord((v) => !v)}
+                aria-label="Word by Word"
+              >
+                <Eye className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 rounded-full text-[#a89984] hover:text-[#fe8019] hover:bg-[#3c3836]"
+                onClick={() => setShowTafsir((v) => !v)}
+                aria-label="Tafsir"
+              >
+                <Scroll className="h-5 w-5" />
               </Button>
             </div>
           </CardContent>
@@ -208,7 +189,7 @@ const AyahContent = ({ verse, ayahId }: AyahContentProps) => {
             className="mb-8 overflow-hidden"
           >
             <Card className="bg-[#282828] border-[#3c3836]">
-              <CardContent className="p-6">
+              <CardContent className="">
                 <h3 className="text-lg font-semibold text-[#ebdbb2] mb-4 flex items-center">
                   <Eye className="h-5 w-5 mr-2 text-[#fe8019]" />
                   Word by Word Translation
@@ -219,7 +200,7 @@ const AyahContent = ({ verse, ayahId }: AyahContentProps) => {
                       key={index}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
+                      transition={{ delay: index * 0.05 }}
                       className="text-center p-3 rounded-lg bg-[#1d2021] border border-[#3c3836]"
                     >
                       <p className="font-arabic text-xl text-[#fe8019] mb-2">
@@ -237,46 +218,6 @@ const AyahContent = ({ verse, ayahId }: AyahContentProps) => {
         )}
       </AnimatePresence>
 
-      {/* Tafsir */}
-      <AnimatePresence>
-        {showTafsir && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-8"
-          >
-            <Card className="bg-[#282828] border-[#3c3836]">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-[#ebdbb2] mb-4 flex items-center">
-                  <Scroll className="h-5 w-5 mr-2 text-[#fe8019]" />
-                  Tafsir (Explanation)
-                </h3>
-                <p className="text-[#a89984] leading-relaxed mb-4">
-                  {verse.tafsir}
-                </p>
-
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="p-4 rounded-lg bg-[#1d2021] border border-[#3c3836]">
-                    <h4 className="text-[#ebdbb2] font-medium mb-2 flex items-center">
-                      <Lightbulb className="h-4 w-4 mr-2 text-[#fabd2f]" />
-                      Context
-                    </h4>
-                    <p className="text-sm text-[#a89984]">{verse.revelation}</p>
-                  </div>
-                  <div className="p-4 rounded-lg bg-[#1d2021] border border-[#3c3836]">
-                    <h4 className="text-[#ebdbb2] font-medium mb-2 flex items-center">
-                      <Heart className="h-4 w-4 mr-2 text-[#d3869b]" />
-                      Benefits
-                    </h4>
-                    <p className="text-sm text-[#a89984]">{verse.benefits}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Reflection */}
       <AnimatePresence>
         {showReflection && (
@@ -284,10 +225,10 @@ const AyahContent = ({ verse, ayahId }: AyahContentProps) => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden"
+            className="overflow-hidden mb-8"
           >
             <Card className="bg-[#282828] border-[#3c3836]">
-              <CardContent className="p-6">
+              <CardContent className="">
                 <h3 className="text-lg font-semibold text-[#ebdbb2] mb-4 flex items-center">
                   <MessageSquare className="h-5 w-5 mr-2 text-[#fe8019]" />
                   Your Reflection
@@ -307,6 +248,30 @@ const AyahContent = ({ verse, ayahId }: AyahContentProps) => {
                     Save Reflection
                   </Button>
                 </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Tafsir */}
+      <AnimatePresence>
+        {showTafsir && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="mb-8"
+          >
+            <Card className="bg-[#282828] border-[#3c3836]">
+              <CardContent className="">
+                <h3 className="text-lg font-semibold text-[#ebdbb2] mb-4 flex items-center">
+                  <Scroll className="h-5 w-5 mr-2 text-[#fe8019]" />
+                  Tafsir (Explanation)
+                </h3>
+                <p className="text-[#a89984] leading-relaxed mb-4">
+                  {verse.tafsir}
+                </p>
               </CardContent>
             </Card>
           </motion.div>
