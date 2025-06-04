@@ -23,8 +23,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import SignOutButton from "../(auth)/register/SignOutButton";
-import { useSession } from "next-auth/react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import Logo from "@/components/custom/logo";
@@ -37,8 +35,20 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [hidden, setHidden] = useState(false);
   const pathname = usePathname();
 
-  const { data: session, status } = useSession();
+  window.document.addEventListener("gesturestart", function (e) {
+    e.preventDefault();
+    window.document.body.style.zoom = 0.99;
+  });
 
+  window.document.addEventListener("gesturechange", function (e) {
+    e.preventDefault();
+
+    window.document.body.style.zoom = 0.99;
+  });
+  window.document.addEventListener("gestureend", function (e) {
+    e.preventDefault();
+    window.document.body.style.zoom = 1;
+  });
   const navItems = [
     { name: "Home", href: "/dashboard", icon: Home },
     { name: "Calendar", href: "/dashboard/calendar", icon: Calendar },
@@ -184,34 +194,21 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
         <div className="border-t border-[#2e2e2e] p-4">
           <div className="flex items-center justify-between">
-            {status === "loading" ? (
-              <div className="flex w-full items-center gap-3">
-                <Skeleton className="h-8 w-8 rounded-full bg-[#2e2e2e]" />
-                <div className="flex-1 space-y-1">
-                  <Skeleton className="h-4 w-3/4 bg-[#2e2e2e]" />
-                  <Skeleton className="h-3 w-full bg-[#2e2e2e]" />
-                </div>
+            <div className="flex items-center gap-3">
+              <Avatar className="h-8 w-8 border border-[#2e2e2e]">
+                <AvatarFallback className="bg-[#2e2e2e] text-[#e0e0e0]">
+                  U
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-sm font-medium text-[#e0e0e0] truncate max-w-[120px]">
+                  User
+                </p>
+                <p className="text-xs text-[#909090] truncate max-w-[120px]">
+                  No email
+                </p>
               </div>
-            ) : (
-              <div className="flex items-center gap-3">
-                <Avatar className="h-8 w-8 border border-[#2e2e2e]">
-                  {session?.user?.image ? (
-                    <AvatarImage src={session.user.image} alt="User avatar" />
-                  ) : null}
-                  <AvatarFallback className="bg-[#2e2e2e] text-[#e0e0e0]">
-                    {session?.user?.name?.charAt(0).toUpperCase() || "U"}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm font-medium text-[#e0e0e0] truncate max-w-[120px]">
-                    {session?.user?.name || "User"}
-                  </p>
-                  <p className="text-xs text-[#909090] truncate max-w-[120px]">
-                    {session?.user?.email || "No email"}
-                  </p>
-                </div>
-              </div>
-            )}
+            </div>
 
             <UserDropdown />
           </div>
@@ -220,7 +217,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     );
   };
 
-  const isSurahPage = pathname.startsWith("/dashboard/guidance/surah/") || pathname.startsWith("/dashboard/guidance/ayah/") || pathname.startsWith("/dashboard/guidance/audio/") || pathname.startsWith("/dashboard/guidance/reflections");
+  const isSurahPage =
+    pathname.startsWith("/dashboard/guidance/surah/") ||
+    pathname.startsWith("/dashboard/guidance/ayah/") ||
+    pathname.startsWith("/dashboard/guidance/audio/") ||
+    pathname.startsWith("/dashboard/guidance/reflections");
 
   return (
     <div className="md:flex bg-[#1d2021] min-h-screen ">
