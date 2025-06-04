@@ -189,39 +189,6 @@ export default function CommandPalette({
     }
   }, [isOpen]);
 
-  // Handle keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isOpen) return;
-
-      switch (e.key) {
-        case "ArrowDown":
-          e.preventDefault();
-          setSelectedIndex((prev) =>
-            Math.min(prev + 1, filteredResults.length - 1)
-          );
-          break;
-        case "ArrowUp":
-          e.preventDefault();
-          setSelectedIndex((prev) => Math.max(prev - 1, 0));
-          break;
-        case "Enter":
-          e.preventDefault();
-          if (filteredResults[selectedIndex]) {
-            handleSelect(filteredResults[selectedIndex]);
-          }
-          break;
-        case "Escape":
-          e.preventDefault();
-          onClose();
-          break;
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, selectedIndex, filteredResults, onClose]);
-
   const handleSelect = (item: (typeof searchData)[0]) => {
     router.push(item.route);
     onClose();
@@ -244,7 +211,7 @@ export default function CommandPalette({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm"
+        className="fixed inset-0 z-50 bg-black/70 h-screen backdrop-blur-sm"
         onClick={onClose}
       >
         <div className="flex items-start justify-center pt-[10vh] px-4">
@@ -360,27 +327,8 @@ export default function CommandPalette({
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-between p-3 border-t border-[#3c3836] bg-[#1d2021]">
-              <div className="flex items-center gap-4 text-xs text-[#a89984]">
-                <div className="flex items-center gap-1">
-                  <ChevronUp className="h-3 w-3" />
-                  <ChevronDown className="h-3 w-3" />
-                  <span>Navigate</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Badge className="bg-[#3c3836] text-[#a89984] text-xs px-1 py-0">
-                    ↵
-                  </Badge>
-                  <span>Select</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Badge className="bg-[#3c3836] text-[#a89984] text-xs px-1 py-0">
-                    Esc
-                  </Badge>
-                  <span>Close</span>
-                </div>
-              </div>
-              <div className="text-xs text-[#504945]">
+            <div className="flex items-center justify-end p-3 border-t border-[#3c3836] bg-[#1d2021]">
+              <div className="text-xs text-[#ebddb2]">
                 {filteredResults.length} result
                 {filteredResults.length !== 1 ? "s" : ""}
               </div>
