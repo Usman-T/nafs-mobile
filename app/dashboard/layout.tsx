@@ -35,20 +35,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [hidden, setHidden] = useState(false);
   const pathname = usePathname();
 
-  window.document.addEventListener("gesturestart", function (e) {
-    e.preventDefault();
-    window.document.body.style.zoom = 0.99;
-  });
-
-  window.document.addEventListener("gesturechange", function (e) {
-    e.preventDefault();
-
-    window.document.body.style.zoom = 0.99;
-  });
-  window.document.addEventListener("gestureend", function (e) {
-    e.preventDefault();
-    window.document.body.style.zoom = 1;
-  });
   const navItems = [
     { name: "Home", href: "/dashboard", icon: Home },
     { name: "Calendar", href: "/dashboard/calendar", icon: Calendar },
