@@ -63,6 +63,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" sizes="192x192" href="/icon-192x192.png" />
         <link rel="apple-touch-icon" sizes="512x512" href="/icon-512x512.png" />
         <meta name="application-name" content="Nafs" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <meta name="msapplication-TileColor" content="#000000" />
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
