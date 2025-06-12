@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { arabicFontClass } from "@/lib/font";
 
 const DailyAyahSection = ({ apiVerse }) => {
   const [showTafsir, setShowTafsir] = useState(false);
@@ -24,23 +25,32 @@ const DailyAyahSection = ({ apiVerse }) => {
 
   const router = useRouter();
 
-  const mapAyah = (apiVerse) => {
-    return {
-      arabic: apiVerse.text_uthmani,
-      translation: apiVerse.translations?.[0]?.text || "",
-      reference: `Surah ${apiVerse.verse_key.split(":")[0]}, Ayah ${
-        apiVerse.verse_number
-      }`,
-      transliteration: "",
-      theme: "",
-      reflection: "",
-      surahId: apiVerse.verse_key.split(":")[0],
-      ayahId: apiVerse.verse_number,
-      tafsir: apiVerse.tafsirs?.[0]?.text || "",
-    };
-  };
+  // const mapAyah = (apiVerse) => {
+  //   console.log({ apiVerse });
 
-  const ayah = mapAyah(apiVerse);
+  //   const verseKey =
+  //     apiVerse.verse_key || `${apiVerse.chapter_id}:${apiVerse.verse_number}`;
+  //   const [surahId, ayahId] = verseKey.split(":");
+
+  //   return {
+  //     arabic: apiVerse.text_uthmani || apiVerse.arabic || "",
+  //     translation:
+  //       apiVerse.translation || apiVerse.translations?.[0]?.text || "",
+  //     reference: `Surah ${apiVerse.surah_name || surahId}, Ayah ${
+  //       apiVerse.verse_number || ayahId
+  //     }`,
+  //     transliteration: "", // You can add transliteration API call if needed
+  //     theme: "",
+  //     reflection: "",
+  //     surahId: parseInt(surahId),
+  //     ayahId: parseInt(ayahId),
+  //     tafsir: apiVerse.tafsir || apiVerse.tafsirs?.[0]?.text || "", // Handle multiple tafsirs
+  //     tafsirs: apiVerse.tafsirs || [], // Array of tafsir objects
+  //   };
+  // };
+
+  const ayah = apiVerse
+  console.log({ ayah });
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(`${ayah.arabic}\n\n${ayah.translation}`);
@@ -91,14 +101,18 @@ const DailyAyahSection = ({ apiVerse }) => {
             className="bg-[#1d2021] rounded-2xl p-5 border border-[#3c3836] cursor-pointer shadow"
             onClick={navigateToVerse}
           >
-            <p className="text-2xl sm:text-3xl text-[#fe8019] text-right font-arabic leading-loose mb-3 select-text">
+            <p
+              className={`text-2xl sm:text-3xl text-[#fe8019] text-right font-arabic leading-loose mb-3 select-text ${arabicFontClass}`}
+            >
               {ayah.arabic}
             </p>
             <p className="text-[#ebdbb2] text-base sm:text-lg mb-2 select-text">
               “{ayah.translation}”
             </p>
             {ayah.transliteration && (
-              <p className="text-[#a89984] text-xs italic">{ayah.transliteration}</p>
+              <p className="text-[#a89984] text-xs italic">
+                {ayah.transliteration}
+              </p>
             )}
           </motion.div>
 
@@ -127,7 +141,11 @@ const DailyAyahSection = ({ apiVerse }) => {
                 onClick={copyToClipboard}
                 aria-label="Copy"
               >
-                {copied ? <Check className="h-5 w-5" /> : <Copy className="h-5 w-5" />}
+                {copied ? (
+                  <Check className="h-5 w-5" />
+                ) : (
+                  <Copy className="h-5 w-5" />
+                )}
               </Button>
               <Button
                 variant="ghost"
@@ -159,7 +177,7 @@ const DailyAyahSection = ({ apiVerse }) => {
                 animate={{ opacity: 1, height: "auto", y: 0 }}
                 exit={{ opacity: 0, height: 0, y: 10 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="overflow-hidden" 
+                className="overflow-hidden"
               >
                 <div className="bg-[#232323] rounded-xl p-4 border border-[#3c3836] shadow">
                   <h4 className="text-[#fe8019] font-semibold mb-2 flex items-center text-sm">

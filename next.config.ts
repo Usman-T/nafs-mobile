@@ -16,6 +16,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  serverExternalPackages: ["pino", "pino-pretty"],
 };
 
 export default withSerwist(nextConfig);

@@ -4,7 +4,8 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { SessionProvider } from "next-auth/react";
-import { arabicFont } from "@/lib/font";
+import "../lib/setup-logger";
+import DisablePinchZoom from "@/components/ui/pinch-zoom";
 
 const geist = Geist({ subsets: ["latin"] });
 
@@ -63,9 +64,13 @@ export default function RootLayout({
         <link rel="apple-touch-icon" sizes="512x512" href="/icon-512x512.png" />
         <meta name="application-name" content="Nafs" />
         <meta name="msapplication-TileColor" content="#000000" />
+        <meta name="mobile-web-app-capable" content="yes" />
       </head>
-      <body className={`${geist.className} bg-[#1d2021] text-[#ebdbb2] antialiased`}>
+      <body
+        className={`${geist.className} bg-[#1d2021] text-[#ebdbb2] antialiased`}
+      >
         <div className="h-screen overflow-y-auto overscroll-none">
+          <DisablePinchZoom />
           <SessionProvider>
             <Toaster />
             {children}

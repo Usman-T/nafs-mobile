@@ -28,25 +28,29 @@ const AyahPage = async ({ params }: AyahPageProps) => {
   console.log({ apiVerse });
 
   const mapVerse = (apiVerse) => {
-    return {
-      arabic: apiVerse.text_uthmani,
-      translation: apiVerse.translations?.[0]?.text || "",
-      transliteration:
-        apiVerse.words.map((word) => word.transliteration.text).join(" ") ||
-        "",
+    console.log({ apiVerse });
 
-      wordByWord:
-        apiVerse.words?.slice(0, -1)?.map((word) => ({
-          arabic: word.text,
-          translation: word.translation.text || "",
-        })) || [],
-      tafsir: apiVerse.tafsirs?.[0]?.text || "",
-      theme: "", // Add theme if available
-      revelation: apiVerse.revelation_place || "",
+    const verseKey =
+      apiVerse.verse_key || `${apiVerse.chapter_id}:${apiVerse.verse_number}`;
+    const [surahId, ayahId] = verseKey.split(":");
+
+    return {
+      arabic: apiVerse.text_uthmani || apiVerse.arabic || "",
+      translation:
+        apiVerse.translation || apiVerse.translations?.[0]?.text || "",
+      reference: `Surah ${apiVerse.surah_name || surahId}, Ayah ${
+        apiVerse.verse_number || ayahId
+      }`,
+      transliteration: "",
+      theme: "",
+      reflection: "",
+      surahId: parseInt(surahId),
+      ayahId: parseInt(ayahId),
+      tafsir: apiVerse.tafsir || "",
     };
   };
   const verse = mapVerse(apiVerse);
-  console.log(verse)
+  console.log(verse);
 
   return (
     <div className="min-h-screen bg-[#1d2021] text-[#ebdbb2] relative overflow-hidden">
