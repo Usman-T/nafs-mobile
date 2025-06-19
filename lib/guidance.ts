@@ -103,7 +103,7 @@ export async function fetchAllSurahs() {
   const config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: "https://apis-prelive.quran.foundation/content/api/v4/chapters",
+    url: "https://apis.quran.foundation/content/api/v4/chapters",
     headers: {
       Accept: "application/json",
       "x-auth-token": token,

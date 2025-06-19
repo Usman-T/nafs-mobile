@@ -16,7 +16,7 @@ const Search = () => {
       <div className="relative">
         <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#a89984]" />
         <Input
-          placeholder="Search surahs, verses, topics... (⌘K)"
+          placeholder="Search surahs, verses, topics..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => setIsSearchFocused(true)}
@@ -30,9 +30,6 @@ const Search = () => {
             isSearchFocused ? "border-[#fe8019]" : ""
           }`}
         />
-        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-          <Badge className="bg-[#3c3836] text-[#a89984] text-xs">⌘K</Badge>
-        </div>
       </div>
     </div>
   );
