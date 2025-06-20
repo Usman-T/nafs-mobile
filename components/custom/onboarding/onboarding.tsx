@@ -24,6 +24,13 @@ import {
   enrollInExistingChallenge,
 } from "@/lib/actions";
 import { useRouter } from "next/navigation";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 export default function ChallengeOnboarding({
   predefinedChallenges,
@@ -53,6 +60,8 @@ export default function ChallengeOnboarding({
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(
     null
   );
+  const [carouselApi, setCarouselApi] = useState();
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const onComplete = async () => {
     try {
@@ -117,7 +126,15 @@ export default function ChallengeOnboarding({
     };
     loadChallenge();
   }, [selectedChallengeId]);
+  useEffect(() => {
+    if (!carouselApi) {
+      return;
+    }
 
+    carouselApi.on("select", () => {
+      setCurrentSlide(carouselApi.selectedScrollSnap());
+    });
+  }, [carouselApi]);
   const handleAddTask = (task: { name: string; dimension: Dimension }) => {
     setCustomChallenge({
       ...customChallenge,
@@ -158,15 +175,45 @@ export default function ChallengeOnboarding({
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {predefinedChallenges.map((challenge) => (
-                <ChallengeCard
-                  key={challenge.id}
-                  challenge={challenge}
-                  isSelected={selectedChallengeId === challenge.id}
-                  onSelect={() => setSelectedChallengeId(challenge.id)}
-                />
-              ))}
+            <div className="grid-cols-1 scrollbar-hide gap-4 grid">
+              <Carousel
+                className="w-full"
+                opts={{
+                  align: "start",
+                  dragFree: false,
+                  loop: false,
+                  slidesToScroll: 1,
+                }}
+                setApi={setCarouselApi}
+              >
+                <CarouselContent>
+                  {predefinedChallenges.map((challenge, i) => (
+                    <CarouselItem key={i} className="px-2 pl-8">
+                      <ChallengeCard
+                        key={challenge.id}
+                        className={""}
+                        challenge={challenge}
+                        isSelected={selectedChallengeId === challenge.id}
+                        onSelect={() => setSelectedChallengeId(challenge.id)}
+                      />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+
+                <div className="flex justify-center space-x-2 mt-3">
+                  {predefinedChallenges.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`w-2 h-2 rounded-full transition-colors ${
+                        index === currentSlide
+                          ? "bg-[#fe8019]"
+                          : "bg-[#504945] hover:bg-[#665c54]"
+                      }`}
+                      onClick={() => carouselApi?.scrollTo(index)}
+                    />
+                  ))}
+                </div>
+              </Carousel>
             </div>
 
             <motion.div
@@ -186,7 +233,6 @@ export default function ChallengeOnboarding({
             </motion.div>
           </motion.div>
         );
-
       case 2:
         return (
           <motion.div
@@ -442,62 +488,63 @@ export default function ChallengeOnboarding({
   };
 
   return (
-    <div className="fixed inset-0 h-screen bg-[#1d2021]/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="bg-[#282828] border border-[#3c3836] rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] flex flex-col"
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="rounded-lg w-full h-screen justify-between flex flex-col"
+    >
+      <div className="p-4 border-b border-[#3c3836] flex items-center justify-between">
+        <div className="flex items-center">
+          <Award className="h-5 w-5 text-[#fe8019] mr-2" />
+          <span className="text-[#ebdbb2] font-medium">
+            Challenge Onboarding
+          </span>
+        </div>
+        <div className="text-[#a89984] text-sm">
+          Step {step + 1} of {selectedChallengeId ? 4 : 7}
+        </div>
+      </div>
+
+      <div
+        ref={containerRef}
+        className="flex overflow-y-auto justify-center items-center p-4 sm:p-6"
       >
-        <div className="p-4 border-b border-[#3c3836] flex items-center justify-between">
-          <div className="flex items-center">
-            <Award className="h-5 w-5 text-[#fe8019] mr-2" />
-            <span className="text-[#ebdbb2] font-medium">
-              Challenge Onboarding
-            </span>
-          </div>
-          <div className="text-[#a89984] text-sm">
-            Step {step + 1} of {selectedChallengeId ? 4 : 7}
-          </div>
-        </div>
+        <AnimatePresence mode="wait">
+          <div key={step}>{renderStepContent()}</div>
+        </AnimatePresence>
+      </div>
 
-        <div ref={containerRef} className="flex-1 overflow-y-auto p-4 sm:p-6">
-          <AnimatePresence mode="wait">
-            <div key={step}>{renderStepContent()}</div>
-          </AnimatePresence>
-        </div>
+      <div className="p-4  border-[#3c3836] flex justify-between">
+        <Button
+          variant="outline"
+          className="border-[#3c3836] text-[#ebdbb2] hover:bg-[#3c3836]"
+          onClick={handleBack}
+          disabled={step === 0 || isLoading}
+        >
+          <ChevronLeft className="h-4 w-4 mr-2" />
+          Back
+        </Button>
 
-        <div className="p-4 border-t border-[#3c3836] flex justify-between">
-          <Button
-            variant="outline"
-            className="border-[#3c3836] text-[#ebdbb2] hover:bg-[#3c3836]"
-            onClick={handleBack}
-            disabled={step === 0 || isLoading}
-          >
-            <ChevronLeft className="h-4 w-4 mr-2" />
-            Back
-          </Button>
-
-          <Button
-            className="bg-[#fe8019] text-[#1d2021] hover:bg-[#d65d0e]"
-            onClick={handleNext}
-            disabled={isNextDisabled() || isLoading}
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Loading...
-              </>
-            ) : showFinishButton() ? (
-              "Start Challenge"
-            ) : (
-              <>
-                Next
-                <ChevronRight className="h-4 w-4 ml-2" />
-              </>
-            )}
-          </Button>
-        </div>
-      </motion.div>
-    </div>
+        <Button
+          className="bg-[#fe8019] text-[#1d2021] hover:bg-[#d65d0e]"
+          onClick={handleNext}
+          disabled={isNextDisabled() || isLoading}
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Loading...
+            </>
+          ) : showFinishButton() ? (
+            "Start Challenge"
+          ) : (
+            <>
+              Next
+              <ChevronRight className="h-4 w-4 ml-2" />
+            </>
+          )}
+        </Button>
+      </div>
+    </motion.div>
   );
 }

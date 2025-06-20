@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Moon,
   BookOpen,
   Search,
   ChevronRight,
@@ -12,16 +11,12 @@ import {
   Flame,
   Target,
   Heart,
-  Users,
   Check,
   Sparkles,
-  Zap,
   Volume2,
   VolumeX,
   Quote,
   Scroll,
-  Star,
-  Award,
   ArrowRight,
   Headphones,
 } from "lucide-react";
@@ -31,7 +26,6 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import Logo from "../logo";
 import { iconMap } from "@/lib/iconMap";
-
 const Particle = ({
   color,
   size: baseSize = 6,
@@ -1062,7 +1056,7 @@ export default function MobileOnboardingFlow({
                 className="mb-6"
               >
                 {(currentStep === 0 || currentStep === steps.length - 1) && (
-                  <div className="w-24 h-24 mx-auto border-2 rounded-full flex items-center justify-center mb-4 shadow-2xl">
+                  <div className="w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-4 shadow-2xl">
                     <Logo className="h-12 w-12 text-[#1d2021]" />
                   </div>
                 )}

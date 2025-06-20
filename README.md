@@ -111,19 +111,18 @@ Like dont just go ahead and fix every fucking error in there, wire up each and e
 
 ## TODOs:
   ### feat: Guidance Page:
-    - Fetch random ayah from Quran API and display on home screen
-    - Make daily ayah show up properly
-    - Add tafsir section to it
+    - Fetch random ayah from Quran API and display on home screen (done)
+    - Make daily ayah show up properly (done)
+    - Add tafsir section to it (done)
     - Update database to create the following options for users:
-       - Saved Ayahs
-       - Reflections
+ - Reflections
        - Recent Surahs (3) + Progression
        - Reading streak
-    - View all Chapter (surahs) page to read
-    - View all Chapter (surahs) page to listen
+    - View all Chapter (surahs) page to read (done)
+    - View all Chapter (surahs) page to listen (done)
     - Specific Surah page (read):
-      - Make Drawer trigger in the header
-      - Show info regarding the surah in (i) icon
+      - Make Drawer trigger in the header (done)
+      - Show info regarding the surah in (i) icon 
       - Fetch and map Verses on the page and (x) option
       - Create an action to create reflection of specific ayah with reference to user
       - Create action to save ayahId with reference to the user 
@@ -139,7 +138,23 @@ Like dont just go ahead and fix every fucking error in there, wire up each and e
     - Map the results of query properly
   
   ### fix: Bugs to be Fixed
-    - Mobile users can "pinch zoom"
-    - Remove Header and Footer on search and guidance pages
-    - Onboarding shows up everytime the user opens app then redirects
+    - Mobile users can "pinch zoom" (fixed)
+    - Remove Header and Footer on search and guidance pages (fixed)
+    - Onboarding shows up everytime the user opens app then redirects (fixed)
     - Better offline page support
+
+
+## FIXES BEFORE SHIPPING
+- Make the onboarding flow full screened and fix all steps 
+  - Use a drawer for add tasks
+  - A carousel for the challenge selection
+  - Duration selection in  a mid step (based on user level)
+- Add *optional tasks of the day* (worth 2 points instead of 1) at the end of onboaridng
+  (not a modal)
+  - Database chars for optional task
+  - Show the optional task of the day modal at the start of each day
+  - Show optional task everyday
+- Better tracking of task days (always shows 1)
+- Better streak tracking (not updated in real time)
+- Streak breaking logic somehow at the start of new day (UI to be made)
+- Enroll in new challenge after completing one 
