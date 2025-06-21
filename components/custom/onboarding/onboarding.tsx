@@ -28,8 +28,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 
 export default function ChallengeOnboarding({
@@ -126,6 +124,7 @@ export default function ChallengeOnboarding({
     };
     loadChallenge();
   }, [selectedChallengeId]);
+
   useEffect(() => {
     if (!carouselApi) {
       return;
@@ -135,6 +134,7 @@ export default function ChallengeOnboarding({
       setCurrentSlide(carouselApi.selectedScrollSnap());
     });
   }, [carouselApi]);
+
   const handleAddTask = (task: { name: string; dimension: Dimension }) => {
     setCustomChallenge({
       ...customChallenge,
@@ -275,87 +275,81 @@ export default function ChallengeOnboarding({
 
       case 4: // Custom challenge - add tasks
         return (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="space-y-6"
-          >
-            <div className="text-center">
-              <h2 className="text-xl font-bold text-[#ebdbb2]">
-                Add Challenge Tasks
-              </h2>
-              <p className="text-[#a89984]">
-                Create tasks to complete daily during your challenge
-              </p>
-            </div>
+          <>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="space-y-6"
+            >
+              <div className="text-center">
+                <h2 className="text-xl font-bold text-[#ebdbb2]">
+                  Add Challenge Tasks
+                </h2>
+                <p className="text-[#a89984]">
+                  Create tasks to complete daily during your challenge
+                </p>
+              </div>
 
-            <div className="space-y-4">
-              {customChallenge.tasks.length > 0 ? (
-                <div className="space-y-2">
-                  {customChallenge.tasks.map((task, i) => {
-                    const IconComponent =
-                      iconMap[task.dimension.icon] || "BookOpen";
-                    return (
-                      <div
-                        key={i}
-                        className="flex items-center justify-between p-3 rounded-md bg-[#1d2021] border border-[#3c3836]"
-                      >
-                        <div className="flex items-center">
-                          <div className="h-8 w-8 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
-                            <IconComponent
-                              className="h-4 w-4"
-                              style={{
-                                color: task.dimension.color,
-                                borderColor: task.dimension.color,
-                              }}
-                            />
-                          </div>
-                          <div>
-                            <span className="text-[#ebdbb2] text-sm sm:text-base">
-                              {task.name}
-                            </span>
-                            <div className="text-xs text-[#a89984] mt-1">
-                              {task.dimension.name}
+              <div className="space-y-4">
+                {customChallenge.tasks.length > 0 ? (
+                  <div className="space-y-2">
+                    {customChallenge.tasks.map((task, i) => {
+                      const IconComponent =
+                        iconMap[task.dimension.icon] || "BookOpen";
+                      return (
+                        <div
+                          key={i}
+                          className="flex items-center justify-between p-3 rounded-md bg-[#1d2021] border border-[#3c3836]"
+                        >
+                          <div className="flex items-center">
+                            <div className="h-8 w-8 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                              <IconComponent
+                                className="h-4 w-4"
+                                style={{
+                                  color: task.dimension.color,
+                                  borderColor: task.dimension.color,
+                                }}
+                              />
+                            </div>
+                            <div>
+                              <span className="text-[#ebdbb2] text-sm sm:text-base">
+                                {task.name}
+                              </span>
+                              <div className="text-xs text-[#a89984] mt-1">
+                                {task.dimension.name}
+                              </div>
                             </div>
                           </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0 text-[#a89984] hover:text-[#fb4934] hover:bg-transparent flex-shrink-0"
+                            onClick={() => {
+                              setCustomChallenge({
+                                ...customChallenge,
+                                tasks: customChallenge.tasks.filter(
+                                  (_, index) => index !== i
+                                ),
+                              });
+                            }}
+                          >
+                            <Trash className="w-6 h-6" />
+                          </Button>
                         </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0 text-[#a89984] hover:text-[#fb4934] hover:bg-transparent flex-shrink-0"
-                          onClick={() => {
-                            setCustomChallenge({
-                              ...customChallenge,
-                              tasks: customChallenge.tasks.filter(
-                                (_, index) => index !== i
-                              ),
-                            });
-                          }}
-                        >
-                          <Trash className="w-6 h-6" />
-                        </Button>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="text-center py-8 border border-dashed border-[#3c3836] rounded-md">
-                  <p className="text-[#a89984]">No tasks added yet</p>
-                  <p className="text-xs text-[#a89984] mt-1">
-                    Add tasks to complete during your challenge
-                  </p>
-                </div>
-              )}
-
-              <AnimatePresence>
-                {showTaskForm ? (
-                  <CustomTaskForm
-                    onAdd={handleAddTask}
-                    dimensions={dimensions}
-                    onCancel={() => setShowTaskForm(false)}
-                  />
+                      );
+                    })}
+                  </div>
                 ) : (
+                  <div className="text-center py-8 border border-dashed border-[#3c3836] rounded-md">
+                    <p className="text-[#a89984]">No tasks added yet</p>
+                    <p className="text-xs text-[#a89984] mt-1">
+                      Add tasks to complete during your challenge
+                    </p>
+                  </div>
+                )}
+
+                <AnimatePresence>
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -370,16 +364,23 @@ export default function ChallengeOnboarding({
                       Add New Task
                     </Button>
                   </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                </AnimatePresence>
+              </div>
 
-            <div className="text-sm text-[#a89984] text-center">
-              <p>
-                Add at least 3 and at max 5 do-able tasks to your challenge.
-              </p>
-            </div>
-          </motion.div>
+              <div className="text-sm text-[#a89984] text-center">
+                <p>
+                  Add at least 3 and at max 5 do-able tasks to your challenge.
+                </p>
+              </div>
+            </motion.div>
+            <CustomTaskForm
+              onAdd={handleAddTask}
+              dimensions={dimensions}
+              onCancel={() => setShowTaskForm(false)}
+              isOpen={showTaskForm}
+              setIsOpen={setShowTaskForm}
+            />
+          </>
         );
 
       case 5: // Custom challenge summary
