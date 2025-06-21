@@ -108,6 +108,10 @@ export default function ChallengeOnboarding({
     if (containerRef.current) {
       containerRef.current.scrollTop = 0;
     }
+    if (step === 5) {
+      setSelectedChallengeId(null);
+      setSelectedChallenge(null);
+    }
   }, [step]);
 
   useEffect(() => {
